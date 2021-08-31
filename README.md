@@ -13,7 +13,7 @@ still under development
 
 
 
-## Tech/framework used
+## Tech/framework and Programming Languages Used
 
 **Built with**
 <ul>
@@ -27,5 +27,11 @@ still under development
   <li>Socket IO</li>
 </ul>
 
+
+**Programming Languages**
+<ul>
+ <li>Java Script</li>
+ <li>C++</li>
+</ul>
 ## Features
 gives a player a nice experience of emulsion the game.
