@@ -33,5 +33,5 @@ still under development
  <li>Java Script</li>
  <li>C++</li>
 </ul>
-##Features
+## Features
 gives a player a nice experience of emulsion the game.
