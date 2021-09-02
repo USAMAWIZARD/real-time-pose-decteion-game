@@ -7,7 +7,7 @@ io = require("socket.io")(socketlisten);
 app.set("view ejgine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(server.static(__dirname));
+app.use(server.static(__dirname+'/views'));
 
 io.on("connection", (socket) => {
 })
@@ -18,8 +18,8 @@ app.get('/',(req,res)=>{
 app.get('/showskeleton',(req,res)=>{
     res.render("showskeleton.ejs")
 })
-app.get('/showskeleton',(req,res)=>{
-    res.render("showskeleton.ejs")
+app.get('/dinoGame',(req,res)=>{
+    res.render("dinoGame.ejs")
 })
 app.get('/showmodel',(req,res)=>{
     res.render('showmodel.ejs')
