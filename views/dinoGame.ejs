@@ -19,12 +19,32 @@
         let dinoIdel = PIXI.Sprite.from('./assets/gameAssets/dino-idle.png'); 
         dinoIdel.y=260;
         app.stage.addChild(dinoIdel);
-        let ground =PIXI.Sprite.from('./assets/gameAssets/ground.png')
-        ground.y=327
-        app.stage.addChild(ground)
+        let ground1 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        let ground2 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        ground1.y=327   
+        ground1.x=0 
+        app.stage.addChild(ground1)
+        app.stage.addChild(ground2)
+        ground2.x=2250
+        ground2.y=327
+
         elapsed=0
         app.ticker.add((delta) => {
-            
+            if(!(ground1.x<=-1100)){
+                ground1.x-=10
+                ground2.x-=10
+            }
+            else{
+                ground2.x-=10
+                ground1.x-=10
+                }
+            if(ground1.x ==-2200){
+                ground1.x=2250
+            }
+            if( ground2.x==-2200)
+                {
+                    ground2.x=2250
+                }
         });
     </script>
 </body>
