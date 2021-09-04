@@ -13,12 +13,13 @@
 <body>
     <script>
         //game logic
-
+        cactus=[]
         let app = new PIXI.Application({ width: window.screen.width, height: window.screen.height });
         document.body.appendChild(app.view);
-        let dinoIdel = PIXI.Sprite.from('./assets/gameAssets/dino-idle.png'); 
-        dinoIdel.y=260;
-        app.stage.addChild(dinoIdel);
+        let dinoIdel = PIXI.Sprite.from('./assets/gameAssets/dino-run.png'); 
+        var a=new PIXI.Texture(dinoIdel,PIXI.Rectangle(10,10,100,100),)
+        var newsprite=new PIXI.Sprite(a);
+        app.stage.addChild(newsprite);
         let ground1 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
         let ground2 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
         ground1.y=327   
@@ -27,24 +28,47 @@
         app.stage.addChild(ground2)
         ground2.x=2250
         ground2.y=327
-
+        speed=10
         elapsed=0
+        
+        cactus[0] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[1] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[2] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[3] =PIXI.Sprite.from('./assets/gameAssets/cactuses_small_1.png')
+        cactus[4] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[5] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_3.png')
+
+
+        randomcac=null
         app.ticker.add((delta) => {
-            if(!(ground1.x<=-1100)){
-                ground1.x-=10
-                ground2.x-=10
+            if(randomcac==null){
+                randomcac=parseInt(Math.random() * (6 - 0) + 0)
+               // console.log(randomcac)
+                cactus[randomcac].y=270
+                cactus[randomcac].x=1300
+                app.stage.addChild(cactus[randomcac])
+            }
+            if(!(ground1.x<=-2200)){
+                ground1.x-=speed
+                ground2.x-=speed
             }
             else{
-                ground2.x-=10
-                ground1.x-=10
+                ground2.x-=speed
+                ground1.x-=speed
                 }
-            if(ground1.x ==-2200){
+            if(ground1.x <=-2200){
                 ground1.x=2250
             }
-            if( ground2.x==-2200)
+            if( ground2.x<=-2200)
                 {
                     ground2.x=2250
                 }
+            cactus[randomcac].x-=speed
+            if(cactus[randomcac].x==-100){
+                app.stage.removeChild(cactus[randomcac])
+                cactus[randomcac].x=1300
+                randomcac=null
+            }
         });
     </script>
 </body>
