@@ -14,12 +14,22 @@
     <script>
         //game logic
         cactus=[]
+        dinoRun=[]
         let app = new PIXI.Application({ width: window.screen.width, height: window.screen.height });
         document.body.appendChild(app.view);
-        let dinoIdel = PIXI.Sprite.from('./assets/gameAssets/dino-run.png'); 
-        var a=new PIXI.Texture(dinoIdel,PIXI.Rectangle(10,10,100,100),)
-        var newsprite=new PIXI.Sprite(a);
-        app.stage.addChild(newsprite);
+        let dinoRunTexture = PIXI.Sprite.from('./assets/gameAssets/dino-run.png'); 
+        dinoRunTexture.y=260
+
+         dinoRun[0] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(0, 0, 88, 93));
+         dinoRun[1] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88-1, 0, 89, 93));
+
+         dinoRun[2] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88+88-1, 0, 89, 93));
+         dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88+88+88-1, 0, 89, 93));
+        
+        app.stage.addChild(dinoRunTexture);
+        dinoRunTexture.texture=dinoRun[0];
+
+
         let ground1 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
         let ground2 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
         ground1.y=327   
@@ -40,10 +50,13 @@
 
 
         randomcac=null
+        running=0
+        elapsed=0
         app.ticker.add((delta) => {
+            elapsed+=delta
             if(randomcac==null){
-                randomcac=parseInt(Math.random() * (6 - 0) + 0)
-               // console.log(randomcac)
+                randomcac=parseInt(Math.random() * (6 - 1) + 1)
+               console.log(randomcac)
                 cactus[randomcac].y=270
                 cactus[randomcac].x=1300
                 app.stage.addChild(cactus[randomcac])
@@ -63,12 +76,22 @@
                 {
                     ground2.x=2250
                 }
-            cactus[randomcac].x-=speed
+                cactus[randomcac].x-=speed
+
             if(cactus[randomcac].x==-100){
                 app.stage.removeChild(cactus[randomcac])
                 cactus[randomcac].x=1300
                 randomcac=null
             }
+            dinoRunTexture.texture=dinoRun[running];
+            if(elapsed>=6){
+            running++
+            elapsed=0
+            if(running==4){
+                running=2
+            }
+            }
+
         });
     </script>
 </body>
