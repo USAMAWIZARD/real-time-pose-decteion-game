@@ -13,86 +13,106 @@
 <body>
     <script>
         //game logic
-        cactus=[]
-        dinoRun=[]
+        cactus = []
+        dinoRun = []
         let app = new PIXI.Application({ width: window.screen.width, height: window.screen.height });
         document.body.appendChild(app.view);
-        let dinoRunTexture = PIXI.Sprite.from('./assets/gameAssets/dino-run.png'); 
-        dinoRunTexture.y=260
+        let dinoRunTexture = PIXI.Sprite.from('./assets/gameAssets/dino-run.png');
+        dinoRunTexture.y = 260
 
-         dinoRun[0] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(0, 0, 88, 93));
-         dinoRun[1] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88-1, 0, 89, 93));
+        dinoRun[0] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(0, 0, 88, 93));
+        dinoRun[1] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 - 1, 0, 89, 93));
 
-         dinoRun[2] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88+88-1, 0, 89, 93));
-         dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88+88+88-1, 0, 89, 93));
-        
+        dinoRun[2] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 - 1, 0, 89, 93));
+        dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 + 88 - 1, 0, 89, 93));
+
         app.stage.addChild(dinoRunTexture);
-        dinoRunTexture.texture=dinoRun[0];
+        dinoRunTexture.texture = dinoRun[0];
 
 
-        let ground1 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
-        let ground2 =PIXI.Sprite.from('./assets/gameAssets/ground.png')
-        ground1.y=327   
-        ground1.x=0 
+        let ground1 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        let ground2 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        ground1.y = 327
+        ground1.x = 0
         app.stage.addChild(ground1)
         app.stage.addChild(ground2)
-        ground2.x=2250
-        ground2.y=327
-        speed=10
-        elapsed=0
-        
-        cactus[0] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
-        cactus[1] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
-        cactus[2] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
-        cactus[3] =PIXI.Sprite.from('./assets/gameAssets/cactuses_small_1.png')
-        cactus[4] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
-        cactus[5] =PIXI.Sprite.from('./assets/gameAssets/cactuses_big_3.png')
+        ground2.x = 2250
+        ground2.y = 327
+        speed = 20
+        elapsed = 0
 
+        cactus[0] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[1] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[2] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[3] = PIXI.Sprite.from('./assets/gameAssets/cactuses_small_1.png')
+        cactus[4] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[5] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_3.png')
 
-        randomcac=null
-        running=0
-        elapsed=0
+        randomcac = null
+        running = 0
+        elapsed = 0
+        jmpspeed = 20
+        isjumping = false
+        jmpgravity = 1
         app.ticker.add((delta) => {
-            elapsed+=delta
-            if(randomcac==null){
-                randomcac=parseInt(Math.random() * (6 - 1) + 1)
-               console.log(randomcac)
-                cactus[randomcac].y=270
-                cactus[randomcac].x=1300
+            elapsed += delta
+            if (randomcac == null) {
+                randomcac = parseInt(Math.random() * (6 - 1) + 1)
+                console.log(randomcac)
+                cactus[randomcac].y = 270
+                cactus[randomcac].x = 1300
                 app.stage.addChild(cactus[randomcac])
             }
-            if(!(ground1.x<=-2200)){
-                ground1.x-=speed
-                ground2.x-=speed
+            if (!(ground1.x <= -2200)) {
+                ground1.x -= speed
+                ground2.x -= speed
             }
-            else{
-                ground2.x-=speed
-                ground1.x-=speed
-                }
-            if(ground1.x <=-2200){
-                ground1.x=2250
+            else {
+                ground2.x -= speed
+                ground1.x -= speed
             }
-            if( ground2.x<=-2200)
-                {
-                    ground2.x=2250
-                }
-                cactus[randomcac].x-=speed
+            if (ground1.x <= -2200) {
+                ground1.x = 2250
+            }
+            if (ground2.x <= -2200) {
+                ground2.x = 2250
+            }
+            cactus[randomcac].x -= speed
 
-            if(cactus[randomcac].x==-100){
+            if (cactus[randomcac].x == -100) {
                 app.stage.removeChild(cactus[randomcac])
-                cactus[randomcac].x=1300
-                randomcac=null
+                cactus[randomcac].x = 1300
+                randomcac = null
             }
-            dinoRunTexture.texture=dinoRun[running];
-            if(elapsed>=6){
-            running++
-            elapsed=0
-            if(running==4){
-                running=2
+
+            if (!isjumping) {
+                dinoRunTexture.texture = dinoRun[running];
+                if (elapsed >= 6) {
+                    running++
+                    elapsed = 0
+                    if (running == 4) {
+                        running = 2
+                    }
+                }
             }
+            else {
+                dinoRunTexture.y -= jmpspeed
+                jmpspeed -= jmpgravity
+
+                if (dinoRunTexture.y >= 260) {
+                    isjumping = false
+                    dinoRunTexture.y = 260
+                    jmpspeed=18
+                }
+
             }
 
         });
+
+        document.addEventListener('keydown', () => {
+            isjumping = true; dinoRunTexture.texture = dinoRun[0]
+        });
+
     </script>
 </body>
 
