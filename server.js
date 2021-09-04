@@ -15,6 +15,9 @@ io.on("connection", (socket) => {
 app.get('/',(req,res)=>{
     res.render("index.ejs")
 })
+app.get('/pingPong',(req,res)=>{
+    res.render("pingPong.ejs")
+})
 app.get('/showskeleton',(req,res)=>{
     res.render("showskeleton.ejs")
 })

@@ -15,20 +15,16 @@
         //game logic
         cactus = []
         dinoRun = []
-        let app = new PIXI.Application({ width: window.screen.width, height: window.screen.height });
+        let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
         document.body.appendChild(app.view);
         let dinoRunTexture = PIXI.Sprite.from('./assets/gameAssets/dino-run.png');
         dinoRunTexture.y = 260
-
         dinoRun[0] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(0, 0, 88, 93));
         dinoRun[1] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 - 1, 0, 89, 93));
-
         dinoRun[2] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 - 1, 0, 89, 93));
         dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 + 88 - 1, 0, 89, 93));
-
         app.stage.addChild(dinoRunTexture);
         dinoRunTexture.texture = dinoRun[0];
-
 
         let ground1 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
         let ground2 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
@@ -38,7 +34,7 @@
         app.stage.addChild(ground2)
         ground2.x = 2250
         ground2.y = 327
-        speed = 20
+        groundSpeed = 20
         elapsed = 0
 
         cactus[0] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
@@ -47,14 +43,21 @@
         cactus[3] = PIXI.Sprite.from('./assets/gameAssets/cactuses_small_1.png')
         cactus[4] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
         cactus[5] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_3.png')
-
+        var scorelabel = new PIXI.Text("00000", {font:"50px Arial", fill:"white"});
+        scorelabel.x=900
+        scorelabel.y=30
+        app.stage.addChild(scorelabel);
         randomcac = null
         running = 0
         elapsed = 0
         jmpspeed = 20
         isjumping = false
         jmpgravity = 1
-        app.ticker.add((delta) => {
+        highScore=0
+        app.ticker.add(gameLoop)
+        function gameLoop(delta) {
+            highScore++
+            scorelabel.text=highScore
             elapsed += delta
             if (randomcac == null) {
                 randomcac = parseInt(Math.random() * (6 - 1) + 1)
@@ -64,12 +67,12 @@
                 app.stage.addChild(cactus[randomcac])
             }
             if (!(ground1.x <= -2200)) {
-                ground1.x -= speed
-                ground2.x -= speed
+                ground1.x -= groundSpeed     
+                ground2.x -= groundSpeed
             }
             else {
-                ground2.x -= speed
-                ground1.x -= speed
+                ground2.x -= groundSpeed
+                ground1.x -= groundSpeed
             }
             if (ground1.x <= -2200) {
                 ground1.x = 2250
@@ -77,7 +80,7 @@
             if (ground2.x <= -2200) {
                 ground2.x = 2250
             }
-            cactus[randomcac].x -= speed
+            cactus[randomcac].x -= groundSpeed
 
             if (cactus[randomcac].x == -100) {
                 app.stage.removeChild(cactus[randomcac])
@@ -107,7 +110,7 @@
 
             }
 
-        });
+        } 
 
         document.addEventListener('keydown', () => {
             isjumping = true; dinoRunTexture.texture = dinoRun[0]
