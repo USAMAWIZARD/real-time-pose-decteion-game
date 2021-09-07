@@ -24,7 +24,7 @@ body
 h1{
     text-align: center;
     font-family: Bord;
-    font-size: 120px;
+    font-size: 150px;
     color: rgb(219, 219, 47);
     text-shadow:0 0 10px black;
     margin-bottom: 0;
@@ -95,7 +95,14 @@ h1{
 {
    transform: scale(1.1);
 }
-
+.nav h2:hover
+{
+   transform: scale(1.1);
+}
+.first h4:hover
+{
+   transform: scale(1.1);
+}
 .top_cat_pro img
 {
     width: 100%;
