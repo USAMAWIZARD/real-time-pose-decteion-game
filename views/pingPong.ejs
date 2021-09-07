@@ -2,90 +2,100 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="./js/pixi.min.js"></script>
-<style>
-    body {
-  margin:0;
-  padding:0;
-  overflow:hidden;
-}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 
-canvas {
-  display:block;
-}
-</style>
+  <script src="./js/pixi.min.js"></script>
+  <script src="./js/bump.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
-    <script>
-        //game logic
-        let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
-        document.body.appendChild(app.view);
+  <script>
+    //game logic
+    let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
+    document.body.appendChild(app.view);
+    var col = new Bump();
 
-        background = PIXI.Sprite.from('./assets/gameAssets/Background.jpg')
-        pad = PIXI.Sprite.from('./assets/gameAssets/PongPaddle.jpg')
-        AIpad = PIXI.Sprite.from('./assets/gameAssets/PongPaddle.jpg')
-        ball = PIXI.Sprite.from('./assets/gameAssets/Ball.png')
-        ball.x=window.innerWidth/2
-        ball.y=window.innerHeight/2
+    background = PIXI.Sprite.from('./assets/gameAssets/Background.jpg')
+    pad = PIXI.Sprite.from('./assets/gameAssets/pongpad.png')
+    AIpad = PIXI.Sprite.from('./assets/gameAssets/pongpad.png')
+    ball = PIXI.Sprite.from('./assets/gameAssets/Ball.png')
+    ball.x = window.innerWidth / 2
+    ball.y = window.innerHeight / 2
+    AIpad.x = window.innerWidth/2
+    AIpad.y =0
+    pad.y = window.innerHeight - 70
+    pad.x = 100
+    app.stage.addChild(background)
+    app.stage.addChild(AIpad)
+    app.stage.addChild(pad)
+    app.stage.addChild(ball)
+    app.ticker.add(gameLoop)
+    xChange = 10
+    yChange = 10
 
-        pad.y=window.innerHeight-30
-        pad.x=100
-        pad.rotation=149.22
+    function gameLoop(delta) {
+      if (col.hit(ball, pad) || col.hit(ball,AIpad  )) {
+        console.log("colusion")
+        yChange = -yChange
 
-        app.stage.addChild(background)
-        app.stage.addChild(pad)
-        app.stage.addChild(ball)
-        app.ticker.add(gameLoop)
-        xChange=10
-        yChange=10
+      }
 
-        function gameLoop(delta) {
-          var mouse = app.renderer.plugins.interaction.mouse.global;
-          MouseX=mouse.x
-          pad.x=MouseX
-
-
-          if (ball.x > window.innerWidth-60 ) {
-            xChange = -xChange;
-          }
-          if (ball.x < 15) {
-            xChange = Math.abs(xChange);
-          }
-          if (ball.y > window.innerHeight ) {
-            yChange = -yChange
-          }
-          if (ball.y < 15) {
-            yChange = Math.abs(yChange)
-          }
-          r = ball.x;
-          b = ball.y;
-          ball.y += yChange;
-          ball.x = ball.x + xChange;
+      var mouse = app.renderer.plugins.interaction.mouse.global;
+      MouseX = mouse.x
+      pad.x = MouseX
 
 
+      if (ball.x > window.innerWidth - 60) {
+        xChange = -xChange;
+      }
+      if (ball.x < 15) {
+        xChange = Math.abs(xChange);
+      }
+      if (ball.y > window.innerHeight) {
+        yChange = -yChange
+      }
+      if (ball.y < 15) {
+        yChange = Math.abs(yChange)
+      }
+      r = ball.x;
+      b = ball.y;
+      ball.y += yChange;
+      ball.x = ball.x + xChange;
 
-        } 
 
 
-        document.addEventListener('keydown', () => {
+    }
 
-        });
-        window.addEventListener('resize', resize);
 
-// Resize function window
-function resize() {
-	// Resize the renderer
-	app.renderer.resize(window.innerWidth, window.innerHeight);
+    document.addEventListener('keydown', () => {
 
-}
+    });
+    window.addEventListener('resize', resize);
 
-resize();
-    </script>
+    // Resize function window
+    function resize() {
+      // Resize the renderer
+      app.renderer.resize(window.innerWidth, window.innerHeight);
+
+    }
+
+    resize();
+  </script>
 </body>
 
 </html>
