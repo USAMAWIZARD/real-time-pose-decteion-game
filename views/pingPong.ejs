@@ -31,11 +31,12 @@
     var col = new Bump();
 
     background = PIXI.Sprite.from('./assets/gameAssets/Background.jpg')
-    pad = PIXI.Sprite.from('./assets/gameAssets/pongpad.png')
-    AIpad = PIXI.Sprite.from('./assets/gameAssets/pongpad.png')
+    pad = PIXI.Sprite.from('./assets/gameAssets/pad.png')
+    AIpad = PIXI.Sprite.from('./assets/gameAssets/pad.png')
     ball = PIXI.Sprite.from('./assets/gameAssets/Ball.png')
     ball.x = window.innerWidth / 2
     ball.y = window.innerHeight / 2
+    ball.circular=true
     AIpad.x = window.innerWidth/2
     AIpad.y =0
     pad.y = window.innerHeight - 120
@@ -45,13 +46,17 @@
     app.stage.addChild(pad)
     app.stage.addChild(ball)
     app.ticker.add(gameLoop)
-    xChange = 10
-    yChange = 10
+    xChange = 5
+    yChange = 5
+    
+    function guessballLocation(x,y){
 
+    }
     function gameLoop(delta) {
-      if (col.hit(ball, pad) || col.hit(ball,AIpad  )) {
+      if (col.hit(ball, pad,true,true,true) || col.hit(ball,AIpad,true,true,true)) {
         console.log("colusion")
-        yChange = -yChange
+       yChange = -yChange
+
 
       }
 
@@ -59,7 +64,8 @@
       MouseX = mouse.x
       pad.x = MouseX
 
-
+     // ball.x=MouseX
+      //ball.y=mouse.y  //testing
       if (ball.x > window.innerWidth - 60) {
         xChange = -xChange;
       }
