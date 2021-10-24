@@ -52,19 +52,43 @@
     function guessballLocation(x,y){
 
     }
-    function gameLoop(delta) {
-      if (col.hit(ball, pad,true,true,true) || col.hit(ball,AIpad,true,true,true)) {
-        console.log("colusion")
-       yChange = -yChange
+    var mouse = app.renderer.plugins.interaction.mouse.global;
 
+    function gameLoop(delta) {
+      AIpad.x=ball.x-AIpad.width/2
+      padcollided=col.rectangleCollision(ball,pad)
+      aipadcollided=col.rectangleCollision(ball,AIpad)
+      if (padcollided !=undefined) {
+        console.log(padcollided)
+        if(padcollided[0]=="l"){
+          xChange = -xChange
+        }
+        else if( padcollided[0]=="r"){
+          yChange = Math.abs(yChange)
+        }
+        else if( padcollided[0]=="b"){
+          yChange = -yChange
+        }
 
       }
 
-      var mouse = app.renderer.plugins.interaction.mouse.global;
-      MouseX = mouse.x
-      pad.x = MouseX
+      if (aipadcollided !=undefined) {
+        console.log(aipadcollided)
+        if(aipadcollided[0]=="l"){
+          xChange = -xChange
+        }
+        else if( aipadcollided[0]=="r"){
+          yChange = Math.abs(yChange)
+        }
+        else if( aipadcollided[0]=="t"){
+          yChange = Math.abs(yChange)
+        }
 
-     // ball.x=MouseX
+      }
+    MouseX = mouse.x
+     pad.x = MouseX
+
+    //  ball.x=MouseX
       //ball.y=mouse.y  //testing
       if (ball.x > window.innerWidth - 60) {
         xChange = -xChange;
