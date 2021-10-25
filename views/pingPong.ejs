@@ -6,8 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
-  <script src="./js/pixi.min.js"></script>
+   <script src="./js/pixi.min.js"></script>
   <script src="./js/bump.js"></script>
 
   <style>
@@ -23,7 +22,21 @@
   </style>
 </head>
 
-<body>
+<body onselectstart="return false">
+  <center>
+    <div id="wrapper" style="display: none;">
+      <div style="position: absolute; z-index: 1; left: 40%; top: 40%; color:white;  border: 5px color 2d2424;
+;    border-radius: 25px;
+;   ;width: 20%;">
+        <h1 style="color: red; 	font-size: 400%;">GAME OVER</h1>
+        <h1 style="	font-size: 300%;  " onclick="window.location.reload()">Restart</h1>
+        <h1 style="	font-size: 300%;  " onclick="  window.history.back();">Home</h1>
+
+      </div>
+
+  </div>
+</center>
+
   <script>
     //game logic
     let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
@@ -36,9 +49,9 @@
     ball = PIXI.Sprite.from('./assets/gameAssets/Ball.png')
     ball.x = window.innerWidth / 2
     ball.y = window.innerHeight / 2
-    ball.circular=true
-    AIpad.x = window.innerWidth/2
-    AIpad.y =0
+    ball.circular = true
+    AIpad.x = window.innerWidth / 2
+    AIpad.y = 0
     pad.y = window.innerHeight - 120
     pad.x = 100
     app.stage.addChild(background)
@@ -48,47 +61,53 @@
     app.ticker.add(gameLoop)
     xChange = 5
     yChange = 5
-    
-    function guessballLocation(x,y){
+
+    function guessballLocation(x, y) {
 
     }
     var mouse = app.renderer.plugins.interaction.mouse.global;
 
     function gameLoop(delta) {
-      AIpad.x=ball.x-AIpad.width/2
-      padcollided=col.rectangleCollision(ball,pad)
-      aipadcollided=col.rectangleCollision(ball,AIpad)
-      if (padcollided !=undefined) {
+
+
+      if (ball.y >= window.innerHeight) {
+        document.getElementById("wrapper").style.display = "inline";
+        return
+      }
+      AIpad.x = ball.x - AIpad.width / 2
+      padcollided = col.rectangleCollision(ball, pad)
+      aipadcollided = col.rectangleCollision(ball, AIpad)
+      if (padcollided != undefined) {
         console.log(padcollided)
-        if(padcollided[0]=="l"){
+        if (padcollided[0] == "l") {
           xChange = -xChange
         }
-        else if( padcollided[0]=="r"){
+        else if (padcollided[0] == "r") {
           yChange = Math.abs(yChange)
         }
-        else if( padcollided[0]=="b"){
+        else if (padcollided[0] == "b") {
           yChange = -yChange
         }
 
       }
 
-      if (aipadcollided !=undefined) {
+      if (aipadcollided != undefined) {
         console.log(aipadcollided)
-        if(aipadcollided[0]=="l"){
+        if (aipadcollided[0] == "l") {
           xChange = -xChange
         }
-        else if( aipadcollided[0]=="r"){
+        else if (aipadcollided[0] == "r") {
           yChange = Math.abs(yChange)
         }
-        else if( aipadcollided[0]=="t"){
+        else if (aipadcollided[0] == "t") {
           yChange = Math.abs(yChange)
         }
 
       }
-    MouseX = mouse.x
-     pad.x = MouseX
+      MouseX = mouse.x
+      pad.x = MouseX
 
-    //  ball.x=MouseX
+      //  ball.x=MouseX
       //ball.y=mouse.y  //testing
       if (ball.x > window.innerWidth - 60) {
         xChange = -xChange;
@@ -112,9 +131,6 @@
     }
 
 
-    document.addEventListener('keydown', () => {
-
-    });
     window.addEventListener('resize', resize);
 
     // Resize function window
