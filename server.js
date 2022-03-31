@@ -27,3 +27,12 @@ app.get('/dinoGame',(req,res)=>{
 app.get('/showmodel',(req,res)=>{
     res.render('showmodel.ejs')
 })
+app.get('/about',(req,res)=>{
+    res.render('about.ejs')
+})
+app.get('/instruction',(req,res)=>{
+    res.render('instruction.ejs')
+})
+app.get('/settings',(req,res)=>{
+    res.render('settings.ejs')
+})

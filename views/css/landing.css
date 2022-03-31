@@ -1,14 +1,14 @@
 @font-face {
     font-family: Bord;
-    src: url(/font/Bord.otf);
+    src: url("../font/Bord.otf");
 }
 @font-face {
     font-family: smith ;
-    src: url(/font/TradesmithRegular.otf);
+    src: url("../font/TradesmithRegular.otf");
 }
 body
 {
-    background-image: url("/assets/Asset 13.png");
+    background-image: url("../assets/Asset 13.png");
     background-size: cover;
     background-attachment: fixed;
     padding: 0;
@@ -110,3 +110,7 @@ h1{
     border-radius: 20px;
 }
 
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}

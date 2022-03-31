@@ -1,0 +1,106 @@
+@font-face {
+    font-family: Bord;
+    src: url("../font/Bord.otf");
+}
+@font-face {
+    font-family: smith ;
+    src: url("../font/TradesmithRegular.otf");
+}
+body
+{
+    background-image: url("../assets/Asset\ 13.png");
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    height: 100vh;  
+    width: 100%;
+}
+.back{
+    position: absolute;
+    top: 5%;
+    left: 2%;
+    height: 10%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    /* background: #f00; */
+}
+.backbtn{
+    height: 70%;
+    width: 25%;
+}
+.back p{
+    font-size: 30px;
+    margin: 0;
+    font-family: smith;
+    color: rgb(219, 219, 47);
+    text-shadow:0 0 10px black;
+    
+}
+h1{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: Bord;
+    font-size: 100px;
+    color: rgb(219, 219, 47);
+    text-shadow:0 0 10px black;
+}
+.game .lang{
+    text-align: center;
+    font-family: smith;
+    color: blue;
+}
+/* .game{
+    position: relative;
+    top: 2%;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    font-family: sans-serif;
+    /* background: #f00;
+} */
+.desc{
+    position: relative;
+    top: 8%;
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    /* background: #f00; */
+}
+
+.desc .ping{
+    padding: 1%;
+    text-align: justify;
+    width: 45%;
+    height: 90%;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    /* background: #f00; */
+    background: rgba(255, 255, 255, 0.144);
+    backdrop-filter: blur(10px);
+}
+.desc .dino{
+    padding: 1%;
+    text-align: justify;
+    width: 45%;
+    height: 90%;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    /* background: #f00; */
+    background: rgba(255, 255, 255, 0.144);
+    backdrop-filter: blur(10px);
+} 
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}

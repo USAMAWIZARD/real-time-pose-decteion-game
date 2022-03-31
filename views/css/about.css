@@ -1,0 +1,127 @@
+@font-face {
+    font-family: Bord;
+    src: url("../font/Bord.otf");
+}
+@font-face {
+    font-family: smith ;
+    src: url("../font/TradesmithRegular.otf");
+}
+body
+{
+    background-image: url("../assets/Asset\ 13.png");
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    height: 100vh;  
+    width: 100%;
+}
+h1{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: Bord;
+    font-size: 100px;
+    color: rgb(219, 219, 47);
+    text-shadow:0 0 10px black;
+}
+.about_us{
+    position: relative;
+    top: -2%;
+    width: 100%;
+    height: 10%;
+    color: blue;
+    /* background-color: blue; */
+    /* background: #f00; */
+}
+/* .member{
+
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: smith;
+    letter-spacing: 2px;
+} */
+.lang{
+    top: 1%;
+}
+ol{
+    display: inline;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+li{
+    padding: 0% 5%;
+    display: inline;
+    font-family: smith;
+}
+.aboutUS{
+    position: relative;
+    top: 2%;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    font-family: sans-serif;
+    /* background: #f00; */
+}
+h2{
+    font-family: smith;
+    letter-spacing: 2px;
+    text-align: center;
+}
+.aboutUS .left{
+    padding: 1%;
+    text-align: justify;
+    width: 45%;
+    height: 110%;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    background: #f00;
+    background: rgba(255, 255, 255, 0.144);
+    backdrop-filter: blur(10px);
+}
+.aboutUS .right{
+    padding: 1%;
+    text-align: justify;
+    width: 45%;
+    height: 110%;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    background: #f00;
+    background: rgba(255, 255, 255, 0.144);
+    backdrop-filter: blur(10px);
+}
+.back{
+    position: absolute;
+    top: 5%;
+    left: 2%;
+    height: 10%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    /* background: #f00; */
+}
+.backbtn{
+    height: 70%;
+    width: 25%;
+}
+.back p{
+    font-size: 30px;
+    margin: 0;
+    font-family: smith;
+    color: rgb(219, 219, 47);
+    text-shadow:0 0 10px black;
+    
+}
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
