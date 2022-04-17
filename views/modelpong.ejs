@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <video id="video" width="640" height="480" muted="muted" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <iframe id="modeliframe" src="/pingpongiframe" sandbox="allow-scripts allow-downloads"
+        style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+
+    <script>
+        // console.log(document.a)
+        var video = document.getElementById('video');
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        var poseNet, stream;
+        (async () => {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            video.srcObject = stream;
+            video.addEventListener('play', () => {
+                function step() {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+                    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    requestAnimationFrame(step)
+                }
+                requestAnimationFrame(step);
+            })
+            video.play();
+
+        })();
+
+        poseNet = ml5.poseNet(video, modelLoaded);
+        function modelLoaded() {
+            console.log("Model Loaded!");
+        }
+        poseNet.on("pose", function (results) {
+            if (results.length > 0) {
+                var sum = parseInt(results[0]["pose"]["leftEye"]["x"]) +
+                    parseInt(results[0]["pose"]["leftAnkle"]["x"]) +
+                    parseInt(results[0]["pose"]["leftEar"]["x"]) +
+                    parseInt(results[0]["pose"]["leftHip"]["x"]) +
+                    parseInt(results[0]["pose"]["leftKnee"]["x"]) +
+                    parseInt(results[0]["pose"]["leftShoulder"]["x"]) +
+                    parseInt(results[0]["pose"]["nose"]["x"]) +               //sum of all the values of user
+                    parseInt(results[0]["pose"]["rightAnkle"]["x"]) +
+                    parseInt(results[0]["pose"]["rightEar"]["x"]) +
+                    parseInt(results[0]["pose"]["rightEye"]["x"]) +
+                    parseInt(results[0]["pose"]["rightHip"]["x"]) +
+                    parseInt(results[0]["pose"]["rightKnee"]["x"]) +
+                    parseInt(results[0]["pose"]["rightShoulder"]["x"])
+
+                document.getElementById("modeliframe").contentWindow.postMessage(sum, "*");
+            }
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

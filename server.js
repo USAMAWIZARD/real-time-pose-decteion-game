@@ -7,6 +7,11 @@ io = require("socket.io")(socketlisten);
 app.set("view ejgine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+  });
 app.use(server.static(__dirname+'/views'));
 
 io.on("connection", (socket) => {
@@ -16,7 +21,7 @@ app.get('/',(req,res)=>{
     res.render("index.ejs")
 })
 app.get('/pingPong',(req,res)=>{
-    res.render("pingPong.ejs")
+    res.render("modelpong.ejs")
 })
 app.get('/showskeleton',(req,res)=>{
     res.render("showskeleton.ejs")
@@ -35,4 +40,8 @@ app.get('/instruction',(req,res)=>{
 })
 app.get('/settings',(req,res)=>{
     res.render('settings.ejs')
+})
+app.get('/pingpongiframe',(req,res)=>{
+    res.setHeader('Access-Control-Allow-Origin','*');
+    res.render('pingPongiframe.ejs')
 })

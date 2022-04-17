@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-   <script src="./js/pixi.min.js"></script>
+  <script src="./js/pixi.min.js"></script>
   <script src="./js/bump.js"></script>
 
   <style>
@@ -14,10 +14,6 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-    }
-
-    canvas {
-      display: block;
     }
   </style>
 </head>
@@ -34,15 +30,13 @@
 
       </div>
 
-  </div>
-</center>
-
+    </div>
+  </center>
   <script>
     //game logic
     let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
     document.body.appendChild(app.view);
     var col = new Bump();
-
     background = PIXI.Sprite.from('./assets/gameAssets/Background.jpg')
     pad = PIXI.Sprite.from('./assets/gameAssets/pad.png')
     AIpad = PIXI.Sprite.from('./assets/gameAssets/pad.png')
@@ -66,7 +60,7 @@
 
     }
     var mouse = app.renderer.plugins.interaction.mouse.global;
-
+    document.onclick = () => { console.log(mouse.x, mouse.y) }
     function gameLoop(delta) {
 
 
@@ -105,7 +99,7 @@
 
       }
       MouseX = mouse.x
-      pad.x = MouseX
+      // pad.x = MouseX
 
       //  ball.x=MouseX
       //ball.y=mouse.y  //testing
@@ -132,15 +126,23 @@
 
 
     window.addEventListener('resize', resize);
-
-    // Resize function window
     function resize() {
-      // Resize the renderer
       app.renderer.resize(window.innerWidth, window.innerHeight);
 
     }
 
+
     resize();
+
+    function scale(number, inMin, inMax, outMin, outMax) {
+      return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    }
+    window.addEventListener("message",
+      function (e) {
+        scaledvalue = scale(e.data / 13, 0, 640, 0, document.body.clientWidth);
+        pad.x = scaledvalue
+      },
+      false);
   </script>
 </body>
 
