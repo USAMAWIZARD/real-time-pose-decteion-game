@@ -23,8 +23,8 @@ app.get('/',(req,res)=>{
 app.get('/pingPong',(req,res)=>{
     res.render("modelpong.ejs")
 })
-app.get('/showskeleton',(req,res)=>{
-    res.render("showskeleton.ejs")
+app.get('/showSkeleton',(req,res)=>{
+    res.render("showSkeleton.ejs")
 })
 app.get('/dinoGame',(req,res)=>{
     res.render("dinoGame.ejs")
