@@ -137,10 +137,17 @@
     function scale(number, inMin, inMax, outMin, outMax) {
       return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
+    const lerp = (a, b, amount) => (1 - amount) * a + amount * b;
     window.addEventListener("message",
       function (e) {
         scaledvalue = scale(e.data / 13, 0, 640, 0, document.body.clientWidth);
-        pad.x = scaledvalue
+        // diff=scaledvalue-pad.x
+        // interp=lerp(pad.x,scaledvalue,0.5)
+        // pad.x=interp
+        // pad.x = pad.x+diff
+        pad.x = scaledvalue-pad.width/2
+        console.log(scaledvalue)
+
       },
       false);
   </script>
