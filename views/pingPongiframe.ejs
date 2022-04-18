@@ -52,7 +52,10 @@
     app.stage.addChild(AIpad)
     app.stage.addChild(pad)
     app.stage.addChild(ball)
-    app.ticker.add(gameLoop)
+    setTimeout(()=>{
+      app.ticker.add(gameLoop)
+
+    },4000)
     xChange = 5
     yChange = 5
     var padInterpolationMove=[]
