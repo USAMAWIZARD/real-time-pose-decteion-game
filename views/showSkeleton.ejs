@@ -9,11 +9,16 @@
   <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
   <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
   <style>
-    html,
-    body {
-      margin: 0 !important;
-      padding: 0 !important;
-    }
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+#canvas {
+    width: 100%;
+    height: 100%;
+}
   </style>
 </head>
 
@@ -26,8 +31,9 @@
     let skeleton;
 
     function setup() {
-      createCanvas(window.outerWidth, window.outerHeight);
+      createCanvas(window.outerWidth, document.body.clientHeight);
       video = createCapture(VIDEO);
+      video.size(window.outerWidth, document.body.clientHeight);
       video.hide();
       poseNet = ml5.poseNet(video, modelLoaded);
       poseNet.on('pose', gotPoses);
