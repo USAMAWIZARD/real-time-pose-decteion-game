@@ -26,7 +26,7 @@
 ;   ;width: 20%;">
         <h1 style="color: red; 	font-size: 400%;">GAME OVER</h1>
         <h1 style="	font-size: 300%;  " onclick="window.location.reload()">Restart</h1>
-        <h1 style="	font-size: 300%;  " onclick="  window.history.back();">Home</h1>
+        <h1 style="	font-size: 300%; "  onclick="window.location='/'">Home</h1>
 
       </div>
 
@@ -52,10 +52,13 @@
     app.stage.addChild(AIpad)
     app.stage.addChild(pad)
     app.stage.addChild(ball)
+    window.onload=(()=>{
     setTimeout(()=>{
       app.ticker.add(gameLoop)
 
     },4000)
+
+  });
     xChange = 5
     yChange = 5
     var padInterpolationMove=[]
@@ -154,6 +157,7 @@
           
         }
         padInterpolationMove.push(lerp(pad.x,scaledvalue,0.2))
+        
         padInterpolationMove.push(lerp(pad.x,scaledvalue,0.4))
         padInterpolationMove.push(lerp(pad.x,scaledvalue,0.6))
         padInterpolationMove.push(lerp(pad.x,scaledvalue,0.8))
@@ -162,7 +166,7 @@
         //pad.x=interp
         //pad.x = pad.x+diff
         //pad.x = scaledvalue-pad.width/2
-        console.log(scaledvalue)
+        //console.log(padInterpolationMove,Date.now())
       },
       false);
   </script>

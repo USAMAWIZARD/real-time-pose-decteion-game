@@ -42,6 +42,6 @@ app.get('/settings',(req,res)=>{
     res.render('settings.ejs')
 })
 app.get('/pingpongiframe',(req,res)=>{
-    res.setHeader('Access-Control-Allow-Origin','*');
+    res.setHeader('Origin-Agent-Cluster','?1');
     res.render('pingPongiframe.ejs')
 })
