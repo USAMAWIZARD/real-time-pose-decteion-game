@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden
+        }
+      canvas {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <center><div id="jumpcount" style="	font-size: 90px;">0</div></center>
+
+    <script>
+        let video;
+        let poseNet;
+        let pose;
+        let skeleton;
+        let posebuffer = [];
+        let bufferlength = 6;
+        function setup() {
+            createCanvas(windowWidth+100, windowHeight+100);
+            background(153);
+
+            video = createCapture(VIDEO);
+            video.hide();
+            poseNet = ml5.poseNet(video, modelLoaded);
+            poseNet.on('pose', gotPoses);
+        }
+        function checkifjump(){
+            mxm = Math.max.apply(Math, posebuffer.slice(bufferlength/2, bufferlength));
+            mnm = Math.min.apply(Math, posebuffer.slice(0, bufferlength/2));
+          //  console.log("maximum", mxm, "minimum", mnm)
+            diff = mxm - mnm                                      //to chek if user jumped
+            if (diff >= 200) {
+                jumpcount=document.getElementById("jumpcount")
+                jumpcount.innerHTML =parseInt(jumpcount.innerHTML)+ 1;
+                posebuffer = []
+            }
+          
+        }
+        function gotPoses(poses) {
+            //console.log(poses);
+            if (poses.length > 0) {
+                posebuffer.push([parseInt(poses[0]["pose"]["leftEye"]["x"])+
+                parseInt(poses[0]["pose"]["leftAnkle"]["x"])+
+                parseInt(poses[0]["pose"]["leftEar"]["x"])+
+                parseInt(poses[0]["pose"]["leftHip"]["x"])+
+                parseInt(poses[0]["pose"]["leftKnee"]["x"])+
+                parseInt(poses[0]["pose"]["leftShoulder"]["x"])+
+                parseInt(poses[0]["pose"]["nose"]["x"])+
+                parseInt(poses[0]["pose"]["rightAnkle"]["x"])+
+                parseInt(poses[0]["pose"]["rightEar"]["x"])+
+                parseInt(poses[0]["pose"]["rightEye"]["x"])+
+                parseInt(poses[0]["pose"]["rightHip"]["x"])+
+                parseInt(poses[0]["pose"]["rightKnee"]["x"])+
+                parseInt(poses[0]["pose"]["rightShoulder"]["x"])])
+
+                checkifjump();
+                if (posebuffer.length > bufferlength) {
+                    posebuffer.shift();
+                }
+            }
+
+        }
+
+        function modelLoaded() {
+            console.log('poseNet ready');
+        }
+
+        function draw() {
+            image(video, 0, 0   );
+
+        }
+    </script>
+
+</body>
+
+</html>

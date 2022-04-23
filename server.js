@@ -29,8 +29,8 @@ app.get('/showSkeleton',(req,res)=>{
 app.get('/dinoGame',(req,res)=>{
     res.render("dinoGame.ejs")
 })
-app.get('/showmodel',(req,res)=>{
-    res.render('showmodel.ejs')
+app.get('/showjump',(req,res)=>{
+    res.render('showjump.ejs')
 })
 app.get('/about',(req,res)=>{
     res.render('about.ejs')

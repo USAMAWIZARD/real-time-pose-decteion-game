@@ -141,7 +141,7 @@
         dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 + 88 - 1, 0, 89, 93));
         app.stage.addChild(dinoRunTexture);
         dinoRunTexture.texture = dinoRun[0];
-
+        
         //   genHitmap(dinoRun[0].baseTexture, 127);
         // genHitmap(dinoRun[1].baseTexture, 127);
         // genHitmap(dinoRun[2].baseTexture, 127);
@@ -178,8 +178,10 @@
         highScore = 0
         var col = new Bump();
         var jump = new Audio("./assets/gameAssets/jump.m4a");
+        document.addEventListener("keydown", function start(){
+        app.ticker.add(gameLoop);
+        },{once:true})
 
-        app.ticker.add(gameLoop)
         function gameLoop(delta) {
 
 
