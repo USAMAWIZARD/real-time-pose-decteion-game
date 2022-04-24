@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,11 +44,12 @@
             poseNet.on('pose', gotPoses);
         }
         function checkifjump(){
-            mxm = Math.max.apply(Math, posebuffer.slice(bufferlength/2, bufferlength));
-            mnm = Math.min.apply(Math, posebuffer.slice(0, bufferlength/2));
+            mxm =  posebuffer[0];
+            mnm =  posebuffer[bufferlength];
           //  console.log("maximum", mxm, "minimum", mnm)
             diff = mxm - mnm                                      //to chek if user jumped
-            if (diff >= 200) {
+            if (diff >= 300) {
+                console.log(diff,posebuffer)
                 jumpcount=document.getElementById("jumpcount")
                 jumpcount.innerHTML =parseInt(jumpcount.innerHTML)+ 1;
                 posebuffer = []
@@ -57,20 +59,16 @@
         function gotPoses(poses) {
             //console.log(poses);
             if (poses.length > 0) {
-                posebuffer.push([parseInt(poses[0]["pose"]["leftEye"]["x"])+
-                parseInt(poses[0]["pose"]["leftAnkle"]["x"])+
-                parseInt(poses[0]["pose"]["leftEar"]["x"])+
-                parseInt(poses[0]["pose"]["leftHip"]["x"])+
-                parseInt(poses[0]["pose"]["leftKnee"]["x"])+
-                parseInt(poses[0]["pose"]["leftShoulder"]["x"])+
-                parseInt(poses[0]["pose"]["nose"]["x"])+
-                parseInt(poses[0]["pose"]["rightAnkle"]["x"])+
-                parseInt(poses[0]["pose"]["rightEar"]["x"])+
-                parseInt(poses[0]["pose"]["rightEye"]["x"])+
-                parseInt(poses[0]["pose"]["rightHip"]["x"])+
-                parseInt(poses[0]["pose"]["rightKnee"]["x"])+
-                parseInt(poses[0]["pose"]["rightShoulder"]["x"])])
-
+                posebuffer.push([
+                parseInt(poses[0]["pose"]["leftAnkle"]["y"])+
+                parseInt(poses[0]["pose"]["leftHip"]["y"])+
+                parseInt(poses[0]["pose"]["leftKnee"]["y"])+
+                parseInt(poses[0]["pose"]["leftShoulder"]["y"])+
+                parseInt(poses[0]["pose"]["rightAnkle"]["y"])+
+                parseInt(poses[0]["pose"]["rightHip"]["y"])+
+                parseInt(poses[0]["pose"]["rightKnee"]["y"])+
+                parseInt(poses[0]["pose"]["rightShoulder"]["y"])])
+                
                 checkifjump();
                 if (posebuffer.length > bufferlength) {
                     posebuffer.shift();
@@ -87,6 +85,10 @@
             image(video, 0, 0   );
 
         }
+
+        //should set time insted of number of values on the buffer 
+        //to make it more accurate
+        //
     </script>
 
 </body>
