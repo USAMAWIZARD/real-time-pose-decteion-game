@@ -15,7 +15,7 @@
             overflow: hidden
         }
       canvas {
-            display: block;
+            display: none;
             margin-left: auto;
             margin-right: auto;
             width: 100%;
@@ -24,14 +24,14 @@
 
     </style>
 </head>
-<body>
-     <center><div style="	font-size: 90px;">Jump Count<div id="jumpcount" >0</div></div></center>
 
+<body>
+    <iframe id="modeliframe" src="/dinogameiframe" sandbox="allow-scripts allow-downloads"
+        style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
     <script>
         let video;
         let poseNet;
         let pose;
-        let skeleton;
         let posebuffer = [];
         let bufferlength = 6;
         function setup() {
@@ -49,9 +49,8 @@
           //  console.log("maximum", mxm, "minimum", mnm)
             diff = mxm - mnm                                      //to chek if user jumped
             if (diff >= 300) {
-                console.log(diff,posebuffer)
-                jumpcount=document.getElementById("jumpcount")
-                jumpcount.innerHTML =parseInt(jumpcount.innerHTML)+ 1;
+           //     console.log(diff,posebuffer)
+                document.getElementById("modeliframe").contentWindow.postMessage("jump", "*");
                 posebuffer = []
             }
           
@@ -88,7 +87,6 @@
 
         //should set time insted of number of values on the buffer 
         //to make it more accurate
-        //
     </script>
 
 </body>

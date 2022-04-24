@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/pixi.min.js"></script>
+    <script src="./js/bump.js"></script>
+</script>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden
+            }
+          canvas {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+                height: 100%;
+
+            }
+    
+        </style>
+<body>
+
+    <center>
+        <div id="wrapper" style="display: none;">
+            <div style="position: absolute; z-index: 1; left: 40%; top: 40%; color:white;  border: 5px color 2d2424;
+    ;    border-radius: 25px;
+    ;   ;width: 20%;">
+                <h1 style="color: red; 	font-size: 400%;">GAME OVER</h1>
+                <h1 style="	font-size: 300%;  " onclick="window.location.reload()">Restart</h1>
+                <h1 style="	font-size: 300%;  " onclick="  window.history.back();">Home</h1>
+
+            </div>
+
+        </div>
+    </center>
+    
+    <script>
+        //game logic
+        cactus = []
+        dinoRun = []
+        var gameover = false
+
+        let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
+        PIXI.Sprite.prototype.containsPoint = function (point) {
+            const tempPoint = { x: 0, y: 0 }
+            //get mouse poisition relative to the bunny anchor point
+            this.worldTransform.applyInverse(point, tempPoint);
+            // console.error('temppoint:' + tempPoint);
+
+            const width = this._texture.orig.width;
+            const height = this._texture.orig.height;
+            const x1 = -width * this.anchor.x;
+            let y1 = 0;
+            let flag = false;
+            //collision detection for sprite (as a square, not pixel perfect)
+            if (tempPoint.x >= x1 && tempPoint.x < x1 + width) {
+                y1 = -height * this.anchor.y;
+
+                if (tempPoint.y >= y1 && tempPoint.y < y1 + height) {
+                    flag = true;
+                }
+            }
+            //if collision not detected return false
+            if (!flag) {
+                return false
+            }
+
+            //if not continues from here
+
+            // bitmap check
+            const tex = this.texture;
+            const baseTex = this.texture.baseTexture;
+            const res = baseTex.resolution;
+
+            if (!baseTex.hitmap) {
+                //generate hitmap
+                if (!genHitmap(baseTex, 255)) {
+                    return true;
+                }
+
+            }
+
+            const hitmap = baseTex.hitmap;
+
+            console.log(hitmap)
+            // this does not account for rotation yet!!!
+
+            //check mouse position if its over the sprite and visible
+            let dx = Math.round((tempPoint.x - x1 + tex.frame.x) * res);
+            let dy = Math.round((tempPoint.y - y1 + tex.frame.y) * res);
+            let ind = (dx + dy * baseTex.realWidth);
+            let ind1 = ind % 32;
+            let ind2 = ind / 32 | 0;
+            return (hitmap[ind2] & (1 << ind1)) !== 0;
+        }
+
+        function genHitmap(baseTex, threshold) {
+
+            //check sprite props
+            if (!baseTex.resource) {
+                //renderTexture
+                return false;
+            }
+            const imgSource = baseTex.resource.source;
+            let canvas = null;
+            if (!imgSource) {
+                return false;
+            }
+            let context = null;
+            if (imgSource.getContext) {
+                canvas = imgSource;
+                context = canvas.getContext('2d');
+            } else if (imgSource instanceof Image) {
+                canvas = document.createElement('canvas');
+                canvas.width = imgSource.width;
+                canvas.height = imgSource.height;
+                context = canvas.getContext('2d');
+                context.drawImage(imgSource, 0, 0);
+            } else {
+                //unknown source;
+                return false;
+            }
+
+            const w = canvas.width, h = canvas.height;
+            let imageData = context.getImageData(0, 0, w, h);
+            //create array
+            let hitmap = baseTex.hitmap = new Uint32Array(Math.ceil(w * h / 32));
+            //fill array
+
+            for (let i = 0; i < w * h; i++) {
+                //lower resolution to make it faster
+                let ind1 = i % 32;
+                let ind2 = i / 32 | 0;
+                //check every 4th value of image data (alpha number; opacity of the pixel)
+                //if it's visible add to the array
+                if (imageData.data[i * 4 + 3] >= threshold) {
+                    hitmap[ind2] = hitmap[ind2] | (1 << ind1);
+                }
+            }
+            return true;
+        }
+        document.body.appendChild(app.view);
+        let dinoRunTexture = PIXI.Sprite.from('./assets/gameAssets/dino-run.png');
+        dinoRunTexture.y = 260
+        dinoRun[0] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(0, 0, 88, 93));
+        dinoRun[1] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 - 1, 0, 89, 93));
+        dinoRun[2] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 - 1, 0, 89, 93));
+        dinoRun[3] = new PIXI.Texture(dinoRunTexture.texture, new PIXI.Rectangle(88 + 88 + 88 - 1, 0, 89, 93));
+        app.stage.addChild(dinoRunTexture);
+        dinoRunTexture.texture = dinoRun[0];
+        
+        //   genHitmap(dinoRun[0].baseTexture, 127);
+        // genHitmap(dinoRun[1].baseTexture, 127);
+        // genHitmap(dinoRun[2].baseTexture, 127);
+        // genHitmap(dinoRun[3].baseTexture, 127);
+
+        let ground1 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        let ground2 = PIXI.Sprite.from('./assets/gameAssets/ground.png')
+        ground1.y = 327
+        ground1.x = 0
+        app.stage.addChild(ground1)
+        app.stage.addChild(ground2)
+        ground2.x = 2250
+        ground2.y = 327
+        groundSpeed = 10
+        elapsed = 0
+        var col = new Bump();
+
+        cactus[0] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[1] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[2] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_1.png')
+        cactus[3] = PIXI.Sprite.from('./assets/gameAssets/cactuses_small_1.png')
+        cactus[4] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_2.png')
+        cactus[5] = PIXI.Sprite.from('./assets/gameAssets/cactuses_big_3.png')
+        var scorelabel = new PIXI.Text("00000", { font: "50px Arial", fill: "white" });
+        scorelabel.x = 900
+        scorelabel.y = 30
+        app.stage.addChild(scorelabel);
+        randomcac = null
+        running = 0
+        elapsed = 0
+        jmpspeed = 10
+        isjumping = false
+        jmpgravity = 1
+        highScore = 0
+        var col = new Bump();
+        var jump = new Audio("./assets/gameAssets/jump.m4a");
+        document.addEventListener("keydown", function start(){
+        app.ticker.add(gameLoop);
+        },{once:true})
+
+        function gameLoop(delta) {
+            if (gameover) {
+                document.getElementById("wrapper").style.display = "inline";
+                return
+            }
+            highScore++
+            scorelabel.text = "Score :" + highScore
+            elapsed += delta
+            if (randomcac == null) {
+                randomcac = parseInt(Math.random() * (6 - 1) + 1)
+               // console.log(randomcac)
+                cactus[randomcac].y = 270
+                cactus[randomcac].x = 2300
+                app.stage.addChild(cactus[randomcac])
+            }
+            if (!(ground1.x <= -2200)) {
+                ground1.x -= groundSpeed
+                ground2.x -= groundSpeed
+            }
+            else {
+                ground2.x -= groundSpeed
+                ground1.x -= groundSpeed
+            }
+            if (ground1.x <= -2200) {
+                ground1.x = 2250
+            }
+            if (ground2.x <= -2200) {
+                ground2.x = 2250
+            }
+            cactus[randomcac].x -= groundSpeed
+
+            if (cactus[randomcac].x == -100) {
+                app.stage.removeChild(cactus[randomcac])
+                randomcac = null
+            }
+
+            if (!isjumping) {
+                dinoRunTexture.texture = dinoRun[running];
+                if (elapsed >= 6) {
+                    running++
+                    elapsed = 0
+                    if (running == 4) {
+                        running = 2
+                    }
+                }
+            }
+            else {
+                dinoRunTexture.y -= jmpspeed
+                jmpspeed -= jmpgravity
+
+                if (dinoRunTexture.y >= 260) {
+                    isjumping = false
+                    dinoRunTexture.y = 260
+                    jmpspeed = 18
+                }
+
+            }
+            if (col.hit(dinoRunTexture, cactus[1])) {
+                //console.log("colusion")
+            }
+        }
+
+        document.addEventListener('keydown', () => {
+            jump.play()
+            isjumping = true; dinoRunTexture.texture = dinoRun[0]
+        });
+        document.addEventListener('click', () => {
+            gameover = true
+        })
+        window.addEventListener("message",
+      function (e) {
+       // console.log("jump")
+        jump.play()
+        isjumping = true; dinoRunTexture.texture = dinoRun[0]
+      },
+      false);
+    </script>
+</body>
+
+</html>

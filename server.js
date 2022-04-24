@@ -27,7 +27,7 @@ app.get('/showSkeleton',(req,res)=>{
     res.render("showSkeleton.ejs")
 })
 app.get('/dinoGame',(req,res)=>{
-    res.render("dinoGame.ejs")
+    res.render("dinogamemodel.ejs")
 })
 app.get('/showjump',(req,res)=>{
     res.render('showjump.ejs')
@@ -44,4 +44,9 @@ app.get('/settings',(req,res)=>{
 app.get('/pingpongiframe',(req,res)=>{
     res.setHeader('Origin-Agent-Cluster','?1');
     res.render('pingPongiframe.ejs')
+})
+
+app.get('/dinogameiframe',(req,res)=>{
+    res.setHeader('Origin-Agent-Cluster','?1');
+    res.render('dinogameiframe.ejs')
 })
